@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sisters Calendar</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 15px;
+        }
+
+        h1 {
+            margin: 10px 0;
+        }
+
+        img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+        }
+
+        .quote {
+            font-size: 1.1em;
+            margin: 15px;
+            font-style: italic;
+        }
+
+        button {
+            font-size: 1.1em;
+            padding: 10px 18px;
+            margin: 8px;
+            border-radius: 12px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 id="monthTitle">January</h1>
+
+    <img id="monthPhoto" src="photos/1.jpg">
+
+    <div class="quote" id="quoteText">
+        January – A gentle new beginning 🌱
+    </div>
+
+    <div>
+        <button onclick="previousMonth()">◀ Previous</button>
+        <button onclick="nextMonth()">Next ▶</button>
+    </div>
+
+<script>
+    let currentMonth = new Date().getMonth() + 1;
+
+    const monthNames = [
+        "", "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const quotes = {
+        1: "A gentle new beginning 🌱",
+        2: "You are loved ❤️",
+        3: "Be strong and courageous",
+        4: "Hope blooms 🌸",
+        5: "Be thankful always",
+        6: "Walk by faith",
+        7: "God is your refuge",
+        8: "Rest and renew",
+        9: "Trust the journey",
+        10: "Do good always",
+        11: "Helly's birthday 🍂",
+        12: "Peace and joy 🎄"
+    };
+
+    function updateView() {
+        document.getElementById("monthTitle").innerText = monthNames[currentMonth];
+        document.getElementById("quoteText").innerText = quotes[currentMonth];
+
+        const img = document.getElementById("monthPhoto");
+        img.src = "photos/" + currentMonth + ".jpg";
+    }
+
+    function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 12) currentMonth = 1;
+        updateView();
+    }
+
+    function previousMonth() {
+        currentMonth--;
+        if (currentMonth < 1) currentMonth = 12;
+        updateView();
+    }
+
+    updateView();
+</script>
+
+</body>
+</html>
