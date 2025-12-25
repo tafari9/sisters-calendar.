@@ -57,6 +57,13 @@
         <button onclick="previousMonth()">◀ Previous</button>
         <button onclick="nextMonth()">Next ▶</button>
     </div>
+<hr>
+
+<h2>Appointments</h2>
+
+<div id="appointments"></div>
+
+<button onclick="addAppointment()">Add Appointment</button>
 
 <script>
     let currentMonth = new Date().getMonth() + 1;
@@ -81,13 +88,16 @@
         12: "Peace and joy 🎄"
     };
 
-    function updateView() {
-        document.getElementById("monthTitle").innerText = monthNames[currentMonth];
-        document.getElementById("quoteText").innerText = quotes[currentMonth];
+  function updateView() {
+    document.getElementById("monthTitle").innerText = monthNames[currentMonth];
+    document.getElementById("quoteText").innerText = quotes[currentMonth];
 
-        const img = document.getElementById("monthPhoto");
-        img.src = "photos/" + currentMonth + ".jpg";
-    }
+    const img = document.getElementById("monthPhoto");
+    img.src = "photos/" + currentMonth + ".jpg";
+
+    showAppointments();
+}
+
 
     function nextMonth() {
         currentMonth++;
@@ -102,7 +112,53 @@
     }
 
     updateView();
+        function getAppointments() {
+        return JSON.parse(localStorage.getItem("appointments") || "[]");
+    }
+
+    function saveAppointments(list) {
+        localStorage.setItem("appointments", JSON.stringify(list));
+    }
+
+    function showAppointments() {
+        const container = document.getElementById("appointments");
+        container.innerHTML = "";
+
+        const list = getAppointments();
+        const monthAppointments = list.filter(a => a.month === currentMonth);
+
+        if (monthAppointments.length === 0) {
+            container.innerHTML = "<p>No appointments this month.</p>";
+            return;
+        }
+
+        monthAppointments.forEach(a => {
+            const item = document.createElement("div");
+            item.innerText = a.day + ": " + a.text;
+            container.appendChild(item);
+        });
+    }
+
+    function addAppointment() {
+        const day = prompt("Enter day of month (1–31):");
+        if (!day) return;
+
+        const text = prompt("Enter appointment:");
+        if (!text) return;
+
+        const list = getAppointments();
+        list.push({
+            month: currentMonth,
+            day: day,
+            text: text
+        });
+
+        saveAppointments(list);
+        showAppointments();
+    }
+
 </script>
 
 </body>
 </html>
+
